@@ -90,28 +90,32 @@ public class PlayerScript : MonoBehaviour
             yInput -= acceleration;
         }
 
-        //if (Input.GetKey(KeyCode.F) && CurrentlyEquipped != null)
-        //{
-        //    CurrentlyEquipped.transform.parent = null;
-        //    Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
-        //    equippedBody.constraints = RigidbodyConstraints2D.None;
-        //    CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
-        //    //equippedBody.AddForce(playerArm.transform.forward * 10);
-        //    CurrentlyEquipped = null;
-        //}
+        if (Input.GetKey(KeyCode.F) && CurrentlyEquipped != null)
+        {
+            CurrentlyEquipped.transform.parent = null;
+            Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+            equippedBody.constraints = RigidbodyConstraints2D.None;
+            equippedBody.bodyType = RigidbodyType2D.Dynamic;
+            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
+            //equippedBody.AddForce(playerArm.transform.forward * 10);
+            CurrentlyEquipped = null;
+        }
 
-        //if (Input.GetKey(KeyCode.E) && CurrentlyEquipped == null)
-        //{
-        //    CurrentlyEquipped = GameObject.Find("Pistol");
+        if (Input.GetKey(KeyCode.E) && CurrentlyEquipped == null)
+        {
+            CurrentlyEquipped = GameObject.Find("Pistol");
 
-        //    CurrentlyEquipped.transform.parent = playerArm.transform;
-        //    Vector2 _pos = CurrentlyEquipped.GetComponent<GunScript>().handle.transform.position;
-        //    CurrentlyEquipped.transform.position = -_pos;
+            CurrentlyEquipped.transform.parent = playerArm.transform;
+            CurrentlyEquipped.transform.localRotation = Quaternion.identity;
 
-        //    Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
-        //    equippedBody.constraints = RigidbodyConstraints2D.FreezeAll;
-        //    CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
-        //}
+            Vector2 _pos = CurrentlyEquipped.GetComponent<GunScript>().handle.transform.localPosition;
+            CurrentlyEquipped.transform.localPosition = new Vector3(_pos.x * -CurrentlyEquipped.transform.localScale.x, _pos.y * -CurrentlyEquipped.transform.localScale.y);
+
+            Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+            equippedBody.bodyType = RigidbodyType2D.Kinematic;
+            equippedBody.constraints = RigidbodyConstraints2D.FreezeAll;
+            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
+        }
 
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && xInput != 0)
         {
