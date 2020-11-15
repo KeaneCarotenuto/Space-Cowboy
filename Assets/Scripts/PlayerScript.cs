@@ -48,6 +48,8 @@ public class PlayerScript : MonoBehaviour
 
         //Apply Rotation
         playerArm.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+
+        
     }
 
     private void MovePlayer()

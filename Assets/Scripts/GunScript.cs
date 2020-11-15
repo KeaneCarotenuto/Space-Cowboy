@@ -20,6 +20,7 @@ public class GunScript : MonoBehaviour
     public bool canShoot;
 
     public GameObject projectile;
+    public GameObject barrel;
     
     void Start()
     {
@@ -46,6 +47,16 @@ public class GunScript : MonoBehaviour
         {
             Shoot();
         }
+
+        Debug.Log(transform.rotation.eulerAngles.z);
+        if (Mathf.Abs(transform.rotation.eulerAngles.z) > 90 && Mathf.Abs(transform.rotation.eulerAngles.z) < 270)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, -Mathf.Abs(transform.localScale.y), transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(transform.localScale.x, Mathf.Abs(transform.localScale.y), transform.localScale.z);
+        }
     }
 
     private void Shoot()
@@ -56,7 +67,7 @@ public class GunScript : MonoBehaviour
         }
 
         timeOfShot = Time.time;
-        GameObject bullet = Instantiate(projectile, transform.position, transform.rotation);
+        GameObject bullet = Instantiate(projectile, barrel.transform.position, transform.rotation);
         Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
         bulletBody.AddForce(bullet.transform.right * 1000);
     }
