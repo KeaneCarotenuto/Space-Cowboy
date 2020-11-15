@@ -16,11 +16,14 @@ public class GunScript : MonoBehaviour
     [Tooltip("Rounds Per Second")]
     [Range(0.0f, 100.0f)] public float rps;
 
+    public bool isEquipped;
+
     public float timeOfShot;
     public bool canShoot;
 
     public GameObject projectile;
     public GameObject barrel;
+    public GameObject handle;
     
     void Start()
     {
@@ -31,7 +34,7 @@ public class GunScript : MonoBehaviour
 
     void Update()
     {
-        if (Time.time - timeOfShot >= rps)
+        if (isEquipped && Time.time - timeOfShot >= rps)
         {
             if ((type == GunTypes.Semi && !Input.GetMouseButton(0)) || type == GunTypes.Auto)
             {

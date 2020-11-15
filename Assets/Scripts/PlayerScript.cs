@@ -16,14 +16,22 @@ public class PlayerScript : MonoBehaviour
 
     public Rigidbody2D playerBody;
     public Rigidbody2D playerArm;
+    public GameObject CurrentlyEquipped;
 
     [Range(-1.0f, 1.0f)] public float xInput;
     [Range(-1.0f, 1.0f)] public float yInput;
+
+    private int armLoops;
 
     void Start()
     {
         xInput = 0;
         yInput = 0;
+
+        if (CurrentlyEquipped != null)
+        {
+            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
+        }
     }
 
     private void Update()
@@ -40,16 +48,20 @@ public class PlayerScript : MonoBehaviour
 
     private void AimArm()
     {
+
         //Get pos of the mouse on screen
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        //Get angle between the current roation and the mouse pos
-        float angle = Vector2.SignedAngle(transform.right, mousePos - (Vector2)transform.position);
+        //Get angle between the current roation and the mouse pos // (Vector2)playerArm.transform.position - (Vector2)transform.position
+        float angle = Vector2.SignedAngle((Vector2)playerArm.transform.position - (Vector2)transform.position, mousePos - (Vector2)transform.position);
+        if (angle < 0)
+        {
+            angle = angle + 360;
+        }
+        //Debug.Log(angle);
 
         //Apply Rotation
-        playerArm.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
-
-        
+        playerArm.transform.RotateAround(transform.position, transform.forward, angle);
     }
 
     private void MovePlayer()
@@ -77,6 +89,29 @@ public class PlayerScript : MonoBehaviour
         {
             yInput -= acceleration;
         }
+
+        //if (Input.GetKey(KeyCode.F) && CurrentlyEquipped != null)
+        //{
+        //    CurrentlyEquipped.transform.parent = null;
+        //    Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+        //    equippedBody.constraints = RigidbodyConstraints2D.None;
+        //    CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
+        //    //equippedBody.AddForce(playerArm.transform.forward * 10);
+        //    CurrentlyEquipped = null;
+        //}
+
+        //if (Input.GetKey(KeyCode.E) && CurrentlyEquipped == null)
+        //{
+        //    CurrentlyEquipped = GameObject.Find("Pistol");
+
+        //    CurrentlyEquipped.transform.parent = playerArm.transform;
+        //    Vector2 _pos = CurrentlyEquipped.GetComponent<GunScript>().handle.transform.position;
+        //    CurrentlyEquipped.transform.position = -_pos;
+
+        //    Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+        //    equippedBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        //    CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
+        //}
 
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && xInput != 0)
         {
