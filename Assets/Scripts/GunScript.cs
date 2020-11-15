@@ -60,6 +60,12 @@ public class GunScript : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, Mathf.Abs(transform.localScale.y), transform.localScale.z);
         }
+
+        if (isEquipped)
+        {
+            Vector2 _pos = GetComponent<GunScript>().handle.transform.localPosition;
+            transform.localPosition = new Vector3(_pos.x * -transform.localScale.x, _pos.y * -transform.localScale.y);
+        }
     }
 
     private void Shoot()

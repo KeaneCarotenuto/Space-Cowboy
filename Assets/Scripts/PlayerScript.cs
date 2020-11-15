@@ -97,7 +97,7 @@ public class PlayerScript : MonoBehaviour
             equippedBody.constraints = RigidbodyConstraints2D.None;
             equippedBody.bodyType = RigidbodyType2D.Dynamic;
             CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
-            //equippedBody.AddForce(playerArm.transform.forward * 10);
+            equippedBody.AddForce(playerArm.transform.forward * 100);
             CurrentlyEquipped = null;
         }
 
@@ -107,9 +107,6 @@ public class PlayerScript : MonoBehaviour
 
             CurrentlyEquipped.transform.parent = playerArm.transform;
             CurrentlyEquipped.transform.localRotation = Quaternion.identity;
-
-            Vector2 _pos = CurrentlyEquipped.GetComponent<GunScript>().handle.transform.localPosition;
-            CurrentlyEquipped.transform.localPosition = new Vector3(_pos.x * -CurrentlyEquipped.transform.localScale.x, _pos.y * -CurrentlyEquipped.transform.localScale.y);
 
             Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
             equippedBody.bodyType = RigidbodyType2D.Kinematic;
