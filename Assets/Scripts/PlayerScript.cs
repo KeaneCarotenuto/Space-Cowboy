@@ -152,7 +152,7 @@ public class PlayerScript : MonoBehaviour
             {
                 closestGun = _gun;
             }
-            else if (Vector2.Distance(playerArm.transform.position, _gun.transform.position) < Vector2.Distance(playerArm.transform.position, closestGun.transform.position))
+            else if (Vector2.Distance(playerArm.transform.position, _gun.GetComponent<GunScript>().handle.transform.position) < Vector2.Distance(playerArm.transform.position, closestGun.GetComponent<GunScript>().handle.transform.position))
             {
                 closestGun = _gun;
             }
