@@ -21,10 +21,12 @@ public class PlayerScript : MonoBehaviour
     [Range(-1.0f, 1.0f)] public float xInput;
     [Range(-1.0f, 1.0f)] public float yInput;
 
-    private int armLoops;
+    private bool pauseEquip;
 
     void Start()
     {
+        pauseEquip = false;
+
         xInput = 0;
         yInput = 0;
 
@@ -91,18 +93,20 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.F) && CurrentlyEquipped != null)
         {
-            CurrentlyEquipped.transform.parent = null;
-            Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
-            equippedBody.constraints = RigidbodyConstraints2D.None;
-            equippedBody.bodyType = RigidbodyType2D.Dynamic;
-            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
-            equippedBody.AddForce(playerArm.transform.forward * 100);
-            CurrentlyEquipped = null;
+            
         }
 
         if (Input.GetKey(KeyCode.E) && CurrentlyEquipped == null)
         {
-            TryEquipGun();
+            if (!pauseEquip) TryEquipGun();
+        }
+        else if (Input.GetKey(KeyCode.E) && CurrentlyEquipped != null)
+        {
+            if (!pauseEquip) TryDropEquipped();
+        }
+        else
+        {
+            pauseEquip = false;
         }
 
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && xInput != 0)
@@ -121,8 +125,22 @@ public class PlayerScript : MonoBehaviour
         yInput = Mathf.Clamp(yInput, -1.0f, 1.0f);
     }
 
+    private void TryDropEquipped()
+    {
+        pauseEquip = true;
+
+        CurrentlyEquipped.transform.parent = null;
+        Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+        equippedBody.constraints = RigidbodyConstraints2D.None;
+        equippedBody.bodyType = RigidbodyType2D.Dynamic;
+        CurrentlyEquipped.GetComponent<GunScript>().isEquipped = false;
+        CurrentlyEquipped = null;
+    }
+
     private void TryEquipGun()
     {
+        pauseEquip = true;
+
         GameObject[] guns = GameObject.FindGameObjectsWithTag("Gun");
         GameObject closestGun = null;
 

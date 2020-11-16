@@ -11,20 +11,46 @@ public class GunScript : MonoBehaviour
         Burst,
         Auto
     };
-    public GunTypes type;
+
+    [Header("Stats")]
+    public GunTypes fireType;
 
     [Tooltip("Rounds Per Second")]
     [Range(0.0f, 100.0f)] public float rps;
 
-    public bool isEquipped;
+    [Tooltip("Spread (In Degrees)")]
+    [Range(0.0f, 90.0f)] public float spread;
 
-    public float timeOfShot;
-    public bool canShoot;
+
+
+    [Header("Projectiles")]
+    [Tooltip("Projectiles Per Shot")]
+    [Range(1.0f, 10.0f)] public int pps;
+
+    [Tooltip("Damage Miltiplier")]
+    [Range(0.0f, 10.0f)] public float dmgMulti;
+
+    [Tooltip("Projectile Shot Force")]
+    [Range(0.0f, 10000.0f)] public float pForce;
+
+    [Tooltip("Projectile Scale")]
+    public Vector2 pScale;
+
+    [Tooltip("Projectile Scale")]
+    public List<BulletScript.BulletEffect> effects;
 
     public GameObject projectile;
+
+
+
+    [Header("Parts")]
     public GameObject barrel;
     public GameObject handle;
-    
+
+    [HideInInspector] public bool isEquipped;
+    [HideInInspector] public bool canShoot;
+    [HideInInspector] public float timeOfShot;
+
     void Start()
     {
         rps = 1 / rps;
@@ -36,7 +62,7 @@ public class GunScript : MonoBehaviour
     {
         if (isEquipped && Time.time - timeOfShot >= rps)
         {
-            if ((type == GunTypes.Semi && !Input.GetMouseButton(0)) || type == GunTypes.Auto)
+            if ((fireType == GunTypes.Semi && !Input.GetMouseButton(0)) || fireType == GunTypes.Auto)
             {
                 canShoot = true;
             }
@@ -69,14 +95,33 @@ public class GunScript : MonoBehaviour
 
     private void Shoot()
     {
-        if (type == GunTypes.Semi)
+        if (fireType == GunTypes.Semi)
         {
             canShoot = false;
         }
 
         timeOfShot = Time.time;
-        GameObject bullet = Instantiate(projectile, barrel.transform.position, transform.rotation);
-        Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
-        bulletBody.AddForce(bullet.transform.right * 1000);
+
+        for (int i = 0; i < pps; i++)
+        {
+            GameObject bullet = Instantiate(projectile, barrel.transform.position, transform.rotation);
+            
+            bullet.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-1.0f, 1.0f) * spread));
+            bullet.transform.localScale = pScale;
+
+            bullet.GetComponent<BulletScript>().damage *= dmgMulti;
+
+            foreach (BulletScript.BulletEffect _effect in effects)
+            {
+                if (!bullet.GetComponent<BulletScript>().effects.Contains(_effect))
+                {
+                    bullet.GetComponent<BulletScript>().effects.Add(_effect);
+                }
+            }
+
+            Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
+            bulletBody.AddForce(bullet.transform.right * pForce);
+        }
+        
     }
 }
