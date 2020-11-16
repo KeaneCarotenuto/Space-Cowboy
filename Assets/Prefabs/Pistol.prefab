@@ -105,7 +105,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 583091ed6eca3a84db755fa9d61be917, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.57254905, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -127,15 +127,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0a5cc8c73d30654e82c35ac24b01184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  rps: 10
-  isEquipped: 0
-  timeOfShot: 0
-  canShoot: 0
+  fireType: 0
+  rps: 4
+  spread: 0
+  pps: 2
+  dmgMulti: 1.5
+  pForce: 1000
+  pScale: {x: 1, y: 1}
+  effects: 0300000000000000
   projectile: {fileID: 7815378373481620659, guid: 26b204fac45005948a78f92ff5d9e712,
     type: 3}
   barrel: {fileID: 6132579308735581033}
   handle: {fileID: 1189864777}
+  isEquipped: 0
+  canShoot: 0
+  timeOfShot: 0
 --- !u!50 &3361757750135359607
 Rigidbody2D:
   serializedVersion: 4
