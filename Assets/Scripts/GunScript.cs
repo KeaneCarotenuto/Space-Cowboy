@@ -51,7 +51,6 @@ public class GunScript : MonoBehaviour
             Shoot();
         }
 
-        Debug.Log(transform.rotation.eulerAngles.z);
         if (Mathf.Abs(transform.rotation.eulerAngles.z) > 90 && Mathf.Abs(transform.rotation.eulerAngles.z) < 270)
         {
             transform.localScale = new Vector3(transform.localScale.x, -Mathf.Abs(transform.localScale.y), transform.localScale.z);

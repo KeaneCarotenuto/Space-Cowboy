@@ -58,7 +58,6 @@ public class PlayerScript : MonoBehaviour
         {
             angle = angle + 360;
         }
-        //Debug.Log(angle);
 
         //Apply Rotation
         playerArm.transform.RotateAround(transform.position, transform.forward, angle);
@@ -103,15 +102,7 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.E) && CurrentlyEquipped == null)
         {
-            CurrentlyEquipped = GameObject.Find("Pistol");
-
-            CurrentlyEquipped.transform.parent = playerArm.transform;
-            CurrentlyEquipped.transform.localRotation = Quaternion.identity;
-
-            Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
-            equippedBody.bodyType = RigidbodyType2D.Kinematic;
-            equippedBody.constraints = RigidbodyConstraints2D.FreezeAll;
-            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
+            TryEquipGun();
         }
 
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && xInput != 0)
@@ -128,6 +119,41 @@ public class PlayerScript : MonoBehaviour
 
         xInput = Mathf.Clamp(xInput, -1.0f, 1.0f);
         yInput = Mathf.Clamp(yInput, -1.0f, 1.0f);
+    }
+
+    private void TryEquipGun()
+    {
+        GameObject[] guns = GameObject.FindGameObjectsWithTag("Gun");
+        GameObject closestGun = null;
+
+        Debug.Log(guns.Length);
+
+        foreach (GameObject _gun in guns)
+        {
+            if (closestGun == null)
+            {
+                closestGun = _gun;
+            }
+            else if (Vector2.Distance(playerArm.transform.position, _gun.transform.position) < Vector2.Distance(playerArm.transform.position, closestGun.transform.position))
+            {
+                closestGun = _gun;
+            }
+        }
+
+        if (closestGun != null)
+        {
+            CurrentlyEquipped = closestGun;
+
+            CurrentlyEquipped.transform.parent = playerArm.transform;
+            CurrentlyEquipped.transform.localRotation = Quaternion.identity;
+
+            Rigidbody2D equippedBody = CurrentlyEquipped.GetComponent<Rigidbody2D>();
+            equippedBody.bodyType = RigidbodyType2D.Kinematic;
+            equippedBody.constraints = RigidbodyConstraints2D.FreezeAll;
+            CurrentlyEquipped.GetComponent<GunScript>().isEquipped = true;
+        }
+
+        
     }
 
     private void OnDrawGizmos()
