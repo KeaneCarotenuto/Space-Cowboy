@@ -18,12 +18,7 @@ public class BulletScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetColours();
-    }
-
-    private void SetColours()
-    {
-        Vector4 newCol = new Vector4(0, 0, 0, 1);
+        Vector4 newCol = new Vector4(0,0,0,1);
 
         if (effects.Contains(BulletEffect.INC))
         {
@@ -45,12 +40,15 @@ public class BulletScript : MonoBehaviour
         }
         if (biggest >= 0)
         {
-            newCol *= 1 / biggest;
+            for (int i = 0; i < 3; i++)
+            {
+                newCol[i] *= 1 / biggest;
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 newCol[i] = Mathf.Clamp(newCol[i], 0, 1);
             }
-
         }
 
         GetComponent<SpriteRenderer>().color = newCol;

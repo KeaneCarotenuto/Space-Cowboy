@@ -271,6 +271,16 @@ PrefabInstance:
       propertyPath: dmgMulti
       value: 0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 6409714524264345937, guid: bd9cddefb2172224c825c00f233d429d,
+        type: 3}
+      propertyPath: effects.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6409714524264345937, guid: bd9cddefb2172224c825c00f233d429d,
+        type: 3}
+      propertyPath: rps
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6808286357201286337, guid: bd9cddefb2172224c825c00f233d429d,
         type: 3}
       propertyPath: m_Color.r
