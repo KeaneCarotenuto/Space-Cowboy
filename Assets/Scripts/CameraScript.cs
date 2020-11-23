@@ -13,6 +13,6 @@ public class CameraScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(toFollow.transform.position.x, toFollow.transform.position.y, -10), 0.1f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(toFollow.transform.position.x, toFollow.transform.position.y, -10), 0.5f);
     }
 }
